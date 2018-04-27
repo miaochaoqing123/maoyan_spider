@@ -46,11 +46,15 @@ def write_to_file(content):
 
 # 主程序
 def main():
-    url = 'http://maoyan.com/board/4?'
-    html = get_one_page(url)
-    for item in parse_one_page(html):
-        print(item)
-        write_to_file(item)
+    start_page = input("请输入开始页: ")
+    end_page = input("请输入结束页: ")
+
+    for page in range(int(start_page)-1,int(end_page)):
+        url = 'http://maoyan.com/board/4?offset=' + str(page) + '0'
+        html = get_one_page(url)
+        for item in parse_one_page(html):
+            print(item)
+            write_to_file(item)
 
 if __name__ == '__main__':
     main()
