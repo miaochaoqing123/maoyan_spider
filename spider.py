@@ -1,6 +1,7 @@
 import json
 import re
 import requests
+from multiprocessing import Pool
 # 导入捕获异常库
 from requests.exceptions import RequestException
 
@@ -45,16 +46,14 @@ def write_to_file(content):
 
 
 # 主程序
-def main():
-    start_page = input("请输入开始页: ")
-    end_page = input("请输入结束页: ")
-
-    for page in range(int(start_page)-1,int(end_page)):
-        url = 'http://maoyan.com/board/4?offset=' + str(page) + '0'
-        html = get_one_page(url)
-        for item in parse_one_page(html):
-            print(item)
-            write_to_file(item)
+def main(page):
+    url = 'http://maoyan.com/board/4?offset=' + str(page)
+    html = get_one_page(url)
+    for item in parse_one_page(html):
+        print(item)
+        write_to_file(item)
 
 if __name__ == '__main__':
-    main()
+    pool = Pool()
+    pool.map(main, [i*10 for i in range(10)])
+
